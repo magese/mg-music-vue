@@ -1,18 +1,34 @@
 <template>
-  <div>
-    <el-container>
-      <el-header><page-header/></el-header>
-      <el-main><router-view/></el-main>
+  <div class="mg-layout">
+    <el-container style="height: 100%">
+      <el-header style="padding: 0">
+        <mg-header/>
+      </el-header>
+      <el-main style="padding: 7px">
+        <el-scrollbar>
+          <router-view/>
+        </el-scrollbar>
+      </el-main>
+      <el-footer height="30">
+        <mg-footer/>
+      </el-footer>
     </el-container>
   </div>
 </template>
 <script>
-import PageHeader from '@/components/PageHeader.vue'
+import MgHeader from '@/components/MgHeader.vue'
+import MgFooter from "@/components/MgFooter.vue";
 
 export default {
   name: 'App',
   components: {
-    PageHeader
+    MgFooter,
+    MgHeader: MgHeader
   }
 }
 </script>
+<style scoped>
+.mg-layout {
+    height: calc(100vh);
+}
+</style>
