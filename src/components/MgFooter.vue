@@ -2,9 +2,9 @@
   <el-divider style="margin: 15px 0">
     <span>
       Powered by
-      <el-link :underline="false" href="https://github.com/magese">
-      <el-image style="height: 15px;margin: 0 3px 5px 0" :src="isDark ? githubLight : githubDark" :fit="'fill'"/>Magese
-      </el-link>
+      <a href="https://github.com/magese" target="_blank" style="text-decoration: none">
+      <el-image style="height: 15px;margin: 0 3px 0 0" :src="isDark ? githubLight : githubDark" :fit="'fill'"/>Magese
+      </a>
     </span>
   </el-divider>
 </template>
