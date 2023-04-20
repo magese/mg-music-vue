@@ -10,7 +10,7 @@
       :router="true"
   >
     <el-menu-item>
-      <el-avatar :size="55" :src="logo" />
+      <el-avatar :size="55" :src="logo" alt="logo" />
     </el-menu-item>
     <div class="flex-grow" />
     <el-menu-item index="/"><search style="width: 1em; height: 1em; margin-right: 8px" />搜索</el-menu-item>
