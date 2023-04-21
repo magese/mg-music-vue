@@ -26,8 +26,8 @@
     <div style="padding-right: 20px;display: flex;align-items: center">
       <el-switch
         v-model="isDark"
-        :active-icon="Moon"
-        :inactive-icon="Sunny"
+        active-icon="Moon"
+        inactive-icon="Sunny"
         style="margin-left: 24px; --el-switch-on-color: #dec37a; --el-switch-off-color: #feee80; --el-text-color-primary: #feee80; --el-color-primary: #dec37a"
         @change="toggleDark"
       />
@@ -35,7 +35,7 @@
   </el-menu>
 </template>
 <script setup lang="ts">
-import {DocumentAdd, Moon, Search, Sunny} from "@element-plus/icons-vue";
+import {DocumentAdd, Search} from "@element-plus/icons-vue";
 import {useDark, useToggle} from '@vueuse/core'
 
 const isDark = useDark()
