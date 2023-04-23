@@ -21,7 +21,7 @@ namespace Search {
         resourceForbidden: boolean;
         source: string;
         fromMusicPlatform: boolean;
-        score: string;
+        score: number;
     }
 }
 
