@@ -7,7 +7,7 @@
           <el-collapse-item title="关键词搜索" name="1">
             <el-container>
               <el-input
-                  v-model="keyword"
+                  v-model="searchRequest.keyword"
                   placeholder="请输入 歌名/歌手/专辑 进行搜索"
                   clearable
                   style="--el-input-border-color: #486846"
@@ -23,9 +23,9 @@
           </el-collapse-item>
           <el-collapse-item title="更多搜索选项" name="2">
             <el-container>
-              <el-input v-model="songName" placeholder="歌曲名称" style="--el-input-border-color: #486846" />
-              <el-input v-model="artist" placeholder="歌手名称" style="--el-input-border-color: #486846; margin: 0 10px" />
-              <el-input v-model="album" placeholder="专辑名称" style="--el-input-border-color: #486846" />
+              <el-input v-model="searchRequest.songName" placeholder="歌曲名称" style="--el-input-border-color: #486846" />
+              <el-input v-model="searchRequest.artist" placeholder="歌手名称" style="--el-input-border-color: #486846; margin: 0 10px" />
+              <el-input v-model="searchRequest.album" placeholder="专辑名称" style="--el-input-border-color: #486846" />
             </el-container>
           </el-collapse-item>
         </el-collapse>
@@ -36,61 +36,46 @@
     <el-row>
       <el-col :xs="1" :sm="2" :md="3" :lg="4" :xl="5"/>
       <el-col :xs="22" :sm="20" :md="18" :lg="16" :xl="14">
-        <el-table :data="tableData" style="width: 100%">
-          <el-table-column prop="date" label="Date" width="180"/>
-          <el-table-column prop="name" label="Name" width="180"/>
-          <el-table-column prop="address" label="Address"/>
+        <el-table :data="tableData" style="width: 100%" highlight-current-row v-loading="loading" element-loading-text="加载中...">
+          <el-table-column prop="name" label="名称" width="180"/>
+          <el-table-column prop="artist" label="歌手"/>
+          <el-table-column prop="album" label="专辑"/>
+          <el-table-column prop="duration" label="时长"/>
+          <el-table-column prop="resourceForbidden" label="封禁资源"/>
+          <el-table-column prop="source" label="来源"/>
+          <el-table-column prop="fromMusicPlatform" label="是否音乐"/>
+          <el-table-column prop="score" label="评分"/>
         </el-table>
       </el-col>
       <el-col :xs="1" :sm="2" :md="3" :lg="4" :xl="5"/>
     </el-row>
-
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
   </el-container>
 </template>
 
 <script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue'
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import {useDark} from "@vueuse/core";
+import {search} from "@/api/search";
 
 const isDark = useDark()
 
 const activeNames = ref(['1'])
-const keyword = ref('')
-const songName = ref('')
-const artist = ref('')
-const album = ref('')
 const loading = ref(false)
 
-const tableData = [
-    {
-        date: '2016-05-03',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-02',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-04',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-        date: '2016-05-01',
-        name: 'Tom',
-        address: 'No. 189, Grove St, Los Angeles',
-    },
-]
+const searchRequest = reactive({
+    keyword: '',
+    songName: '',
+    artist: '',
+    album: ''
+})
 
-function searchMusic() {
+const tableData = ref([])
+
+const searchMusic = async () => {
     loading.value = true
-    setInterval(() => loading.value = false, 3000)
+    const response: any = await search(searchRequest)
+    tableData.value = response.data.results
+    loading.value = false
 }
 </script>
 <style>
