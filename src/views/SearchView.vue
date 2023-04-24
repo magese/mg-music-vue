@@ -45,17 +45,35 @@
           <el-table-column prop="source" label="来源" width="120" />
           <el-table-column prop="resourceForbidden" label="会员资源" width="80">
             <template #default="scope">
-              <el-tag :type="scope.row.resourceForbidden ? 'info' : 'success'">{{ scope.row.resourceForbidden ? '是' : '否' }}</el-tag>
+              <el-tag :type="scope.row.resourceForbidden ? 'info' : 'success'" round>
+                {{ scope.row.resourceForbidden ? '是' : '否' }}
+              </el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="score" label="评分" width="200">
+          <el-table-column label="操作" width="170">
             <template #default="scope">
-              <el-rate
-                  v-model="scope.row.score"
-                  :max="maxScore"
-                  disabled
-                  show-score
-              />
+              <el-button-group size="small">
+                <el-popover trigger="hover" placement="top-start" :width="135" content="点击播放音乐试听">
+                  <template #reference>
+                    <el-button :dark="!!isDark" plain color="#486846" icon="VideoPlay"/>
+                  </template>
+                </el-popover>
+                <el-popover trigger="hover" placement="top-start" :width="135" content="下载音乐至服务器">
+                  <template #reference>
+                    <el-button :dark="!!isDark" plain color="#486846" icon="DocumentAdd"/>
+                  </template>
+                </el-popover>
+                <el-popover trigger="hover" placement="top-start" :width="135" content="下载音乐到本地">
+                  <template #reference>
+                    <el-button :dark="!!isDark" plain color="#486846" icon="Download"/>
+                  </template>
+                </el-popover>
+                <el-popover trigger="hover" placement="top-start" :width="135" content="在源站中打开">
+                  <template #reference>
+                    <el-button :dark="!!isDark" plain color="#486846" icon="Link" @click="window.open(scope.row.url)" />
+                  </template>
+                </el-popover>
+              </el-button-group>
             </template>
           </el-table-column>
         </el-table>
@@ -83,15 +101,11 @@ const searchRequest = reactive({
 })
 
 const tableData = ref([])
-const maxScore = ref(5)
 
 const searchMusic = async () => {
     loading.value = true
     const response: any = await search(searchRequest)
     tableData.value = response.data.results
-    if (response.data.results) {
-        maxScore.value = parseInt(response.data.results[0].score + 1)
-    }
     loading.value = false;
 }
 
